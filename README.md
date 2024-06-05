@@ -1,0 +1,2 @@
+# HandonSeminarForStudent
+レイヤード主催の学生向けのハンズオンセミナーの資料を保管する場所
