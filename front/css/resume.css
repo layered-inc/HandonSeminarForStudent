@@ -1,0 +1,112 @@
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.0;  
+  font-size: 10px;
+  font-size: 1rem;
+}
+
+/* ローディング */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #5bc8ac;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- 履歴書画面 --- */
+.resume {
+  background-color: rgb(175, 174, 174) !important;
+  height: 120vh;
+}
+
+header {
+  width: 100%;
+  height: 60px;
+  padding: 0 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #333;
+  background-color: #fff;
+  display: flex;
+  font-family: sans-serif;
+}
+
+header .title {
+  font-size: 24px;
+  padding: 0;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+header .button-area {
+  margin-left: auto;
+  margin-top: 15px;
+  margin-right: 10px;
+}
+
+html {
+  font-size: 62.5%;
+}
+page {
+  background: white;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.5cm;
+  box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+  width: 1260px;
+  height: 891px;
+}
+td {
+  padding: 0 5px;
+}
+.bd-t-s {
+  border-top: 1px solid;
+}
+.bd-r-s {
+  border-right: 1px solid;
+}
+.bd-b-s {
+  border-bottom: 1px solid;
+}
+.bd-l-s {
+  border-left: 1px solid;
+}
+.bd-t-dt {
+  border-top: 1px dotted;
+}
+.bd-r-dt {
+  border-right: 1px dotted;
+}
+.bd-b-dt {
+  border-bottom: 1px dotted;
+}
+.bd-l-dt {
+  border-left: 1px dotted;
+}
+.bd-t-db {
+  border-top: 4px double;
+}
+.center {
+  text-align: center;
+}
+/* --- ----------- --- */

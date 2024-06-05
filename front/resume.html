@@ -1,0 +1,725 @@
+<!-- 
+履歴書のページです
+HTMLはウェブページの骨格となる構造を記述するためのマークアップ言語です。
+HTMLファイルはブラウザによって解釈され、視覚的に表示されます。
+-->
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- 
+    ここでは、文字コード、ビューポート設定、タブ名などの基本情報を設定します。
+    -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- タブの名前 -->
+    <title>履歴書 生成</title>
+    <!-- 自前CSSファイルとの紐付け -->
+    <link rel="stylesheet" href="css/resume.css" />
+    <link rel="stylesheet" href="css/form.css" />
+    <!-- fontawesome というアイコンサービスを利用する -->
+    <link
+      href="https://use.fontawesome.com/releases/v6.2.0/css/all.css"
+      rel="stylesheet"
+    />
+    <!-- bootstrap というCSSを簡単にかけるサービスを利用する -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <!-- jQuery という JavaScript で HTML 要素の編集を簡単にできるサービスを利用する -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <!-- 自前JavaScriptファイルとの紐付け -->
+    <script src="js/resume.js"></script>
+  </head>
+  <!-- 画面に表示されるのはここから -->
+  <body>
+    <div class="resume">
+      <!-- ヘッダー部分の構成 -->
+      <header>
+        <div class="title">
+          <h1>履歴書 生成</h1>
+        </div>
+        <div class="button-area">
+          <!-- 一覧画面へ遷移 -->
+          <a
+            href="lists.html"
+            target="_blank"
+            style="margin-right: 10px; font-size: 12px; letter-spacing: 2px"
+            >一覧画面へ</a
+          >
+          <!-- 印刷ボタン -->
+          <button
+            id="print"
+            type="button"
+            class="btn btn-outline-secondary btn-lg"
+            style="margin-right: 10px"
+          >
+            <i class="fa-solid fa-print"></i>
+          </button>
+          <!-- 自己PR再生成ボタン -->
+          <button id="resetSelfPr" class="btn btn-outline-secondary btn-lg">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
+      </header>
+      <!-- 履歴書部分の構成 -->
+      <main>
+        <page
+          size="A3"
+          layout="portrait"
+          style="padding: 60px; box-sizing: border-box"
+        >
+          <table
+            border-collapse="collapse"
+            cellspacing="0"
+            cellpadding="0"
+            style="table-layout: fixed; width: 0"
+          >
+            <thead>
+              <tr style="height: 0px">
+                <th style="width: 70px"></th>
+                <th style="width: 45px"></th>
+                <th style="width: 155px"></th>
+                <th style="width: 70px"></th>
+                <th style="width: 70px"></th>
+                <th style="width: 130px"></th>
+                <th style="width: 60px"></th>
+                <th style="width: 70px"></th>
+                <th style="width: 45px"></th>
+                <th style="width: 425px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="height: 33.5px">
+                <td
+                  style="
+                    font-size: 2rem;
+                    line-height: 2rem;
+                    text-align: center;
+                    font-family: serif;
+                  "
+                  colspan="2"
+                >
+                  履 歴 書
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: right" contenteditable="true">
+                  <!-- JavaScriptによって生年月日が設定される -->
+                  <span id="nowYear"></span>年 <span id="nowMonth"></span>月
+                  <span id="nowDay"></span>日 現在
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <td class="bd-t-s bd-l-s">フリガナ</td>
+                <td
+                  class="bd-t-s bd-l-s"
+                  colspan="3"
+                  contenteditable="true"
+                  id="nameKana"
+                ></td>
+                <!-- JavaScriptによって性別が設定される -->
+                <td
+                  class="bd-t-s bd-l-dt center"
+                  rowspan="3"
+                  contenteditable="true"
+                  id="gender"
+                ></td>
+                <td class="bd-t-s bd-r-s bd-l-s center" rowspan="4">
+                  （写真を貼る位置）
+                </td>
+                <td></td>
+                <td class="bd-t-s bd-l-s center">年</td>
+                <td class="bd-t-s bd-l-dt center">月</td>
+                <td class="bd-t-s bd-r-s bd-l-dt center">学歴・職歴</td>
+              </tr>
+              <tr style="height: 33.5px">
+                <td class="bd-t-dt bd-l-s" rowspan="2">氏 名</td>
+                <!-- JavaScriptによって氏名が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s"
+                  colspan="3"
+                  rowspan="2"
+                  contenteditable="true"
+                  id="name"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって学歴職歴の12個目が設定される -->
+                <td
+                  class="bd-t-db bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear12"
+                ></td>
+                <td
+                  class="bd-t-db bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth12"
+                ></td>
+                <td
+                  class="bd-t-db bd-r-s bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWork12"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <td></td>
+                <!-- JavaScriptによって学歴職歴の13個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear13"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth13"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWork13"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <td class="bd-t-s bd-l-s">生年月日</td>
+                <!-- JavaScriptによって生年月日と年齢が設定される -->
+                <td
+                  class="bd-t-s bd-l-s"
+                  colspan="4"
+                  contenteditable="true"
+                  id="birthDate"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって学歴職歴の14個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear14"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth14"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWork14"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <td class="bd-t-s bd-l-s">フリガナ</td>
+                <!-- JavaScriptによって住所のカナが設定される -->
+                <td
+                  class="bd-t-s bd-r-s bd-l-s"
+                  colspan="5"
+                  contenteditable="true"
+                  id="addressKana"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって学歴職歴の15個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear15"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth15"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWork15"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <td class="bd-t-dt bd-l-s">住 所</td>
+                <td class="bd-t-dt bd-r-s" colspan="5" contenteditable="true">
+                  <!-- JavaScriptによって郵便番号が設定される -->
+                  ( 〒 <span id="postalCode"></span> )
+                </td>
+                <td></td>
+                <!-- JavaScriptによって学歴職歴の16個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear16"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth16"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWork16"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって住所が設定される -->
+                <td
+                  class="bd-r-s bd-l-s"
+                  colspan="6"
+                  rowspan="2"
+                  contenteditable="true"
+                  id="address"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって学歴職歴の17個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear17"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth17"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWork17"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <td></td>
+                <!-- JavaScriptによって学歴職歴の18個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear18"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth18"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWork18"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <td class="bd-t-s bd-l-s">電話</td>
+                <!-- JavaScriptによって電話番号が設定される -->
+                <td
+                  class="bd-t-s"
+                  colspan="2"
+                  contenteditable="true"
+                  id="phoneNumber"
+                ></td>
+                <td class="bd-t-s bd-l-s">携帯電話</td>
+                <!-- JavaScriptによって携帯番号が設定される -->
+                <td
+                  class="bd-t-s bd-r-s"
+                  colspan="2"
+                  contenteditable="true"
+                  id="mobilePhoneNumber"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって学歴職歴の19個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear19"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth19"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWork19"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <td class="bd-t-s bd-l-s">E-mail</td>
+                <!-- JavaScriptによってメールアドレスが設定される -->
+                <td
+                  class="bd-t-s bd-r-s"
+                  colspan="5"
+                  contenteditable="true"
+                  id="email"
+                ></td>
+                <td></td>
+                <td class="bd-t-s bd-l-s center">年</td>
+                <td class="bd-t-s bd-l-dt center">月</td>
+                <td class="bd-t-s bd-r-s bd-l-dt center">免許・資格</td>
+              </tr>
+              <tr style="height: 33.5px">
+                <td class="bd-t-s bd-l-s center">年</td>
+                <td class="bd-t-s bd-l-dt center">月</td>
+                <td class="bd-t-s bd-r-s bd-l-dt center" colspan="4">
+                  学歴・職歴
+                </td>
+                <td></td>
+                <!-- JavaScriptによって免許・資格の1個目が設定される -->
+                <td
+                  class="bd-t-db bd-l-s center"
+                  contenteditable="true"
+                  id="licenseYear1"
+                ></td>
+                <td
+                  class="bd-t-db bd-l-dt center"
+                  contenteditable="true"
+                  id="licenseMonth1"
+                ></td>
+                <td
+                  class="bd-t-db bd-r-s bd-l-dt"
+                  contenteditable="true"
+                  id="license1"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の1個目が設定される -->
+                <td
+                  class="bd-t-db bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear1"
+                ></td>
+                <td
+                  class="bd-t-db bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth1"
+                ></td>
+                <td
+                  class="bd-t-db bd-r-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork1"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって免許・資格の2個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  id="licenseYear2"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  id="licenseMonth2"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  id="license2"
+                  contenteditable="true"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の２個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear2"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth2"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork2"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって免許・資格の3個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  id="licenseYear3"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  id="licenseMonth3"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  id="license3"
+                  contenteditable="true"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の3個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear3"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth3"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork3"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって免許・資格の4個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  id="licenseYear4"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  id="licenseMonth4"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  id="license4"
+                  contenteditable="true"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の4個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear4"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth4"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork4"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって免許・資格の5個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  id="licenseYear5"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  id="licenseMonth5"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  id="license5"
+                  contenteditable="true"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の5個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear5"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth5"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork5"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって免許・資格の6個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  id="licenseYear6"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  id="licenseMonth6"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  id="license6"
+                  contenteditable="true"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の6個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear6"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth6"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork6"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって免許・資格の7個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  id="licenseYear7"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  id="licenseMonth7"
+                  contenteditable="true"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  id="license7"
+                  contenteditable="true"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の7個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear7"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth7"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork7"
+                ></td>
+                <td></td>
+                <td class="bd-t-s bd-r-s bd-l-s" colspan="3">自己PR</td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の8個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear8"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth8"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork8"
+                ></td>
+                <td></td>
+                <!-- JavaScriptによって自己PRが設定される -->
+                <td
+                  id="selfPr"
+                  class="bd-t-s bd-r-s bd-b-s bd-l-s"
+                  colspan="3"
+                  rowspan="4"
+                  contenteditable="true"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の9個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear9"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth9"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork9"
+                ></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の10個目が設定される -->
+                <td
+                  class="bd-t-dt bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear10"
+                ></td>
+                <td
+                  class="bd-t-dt bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth10"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork10"
+                ></td>
+                <td></td>
+              </tr>
+              <tr style="height: 33.5px">
+                <!-- JavaScriptによって学歴職歴の11個目が設定される -->
+                <td
+                  class="bd-t-dt bd-b-s bd-l-s center"
+                  contenteditable="true"
+                  id="educationAndWorkYear11"
+                ></td>
+                <td
+                  class="bd-t-dt bd-b-s bd-l-dt center"
+                  contenteditable="true"
+                  id="educationAndWorkMonth11"
+                ></td>
+                <td
+                  class="bd-t-dt bd-r-s bd-b-s bd-l-dt"
+                  colspan="4"
+                  contenteditable="true"
+                  id="educationAndWork11"
+                ></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </page>
+      </main>
+    </div>
+    <!-- ローディング -->
+    <div id="loadingSpinner" class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+  </body>
+</html>

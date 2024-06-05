@@ -1,0 +1,328 @@
+<!-- 
+入力フォームのページです
+HTMLはウェブページの骨格となる構造を記述するためのマークアップ言語です。
+HTMLファイルはブラウザによって解釈され、視覚的に表示されます。
+-->
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- 
+    ここでは、文字コード、ビューポート設定、タブ名などの基本情報を設定します。
+    画面には表示されません。
+    -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- タブの名前 -->
+    <title>履歴書 入力</title>
+    <!-- 自前CSSファイルとの紐付け -->
+    <!-- <link rel="stylesheet" href="css/form.css" /> -->
+    <!-- bootstrap というCSSを簡単にかけるサービスを利用する -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <!-- jQuery という JavaScript で HTML 要素の編集を簡単にできるサービスを利用する -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <!-- crypto-js という JavaScript で 暗号化を簡単にできるサービスを利用する -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <!-- 自前JavaScriptファイルとの紐付け -->
+    <!-- <script src="js/form.js"></script> -->
+  </head>
+  <!-- 画面に表示されるのはここから -->
+  <body>
+    <main>
+      <!-- ローディング -->
+      <div id="loadingSpinner" class="spinner-overlay" style="display: none">
+        <div class="spinner"></div>
+      </div>
+      <form id="resumeForm" novalidate>
+        <div class="Form mb-5">
+          <!-- 氏名入力欄 -->
+          <div class="Form-Item">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Required">必須</span>氏名
+            </p>
+            <input
+              type="text"
+              class="Form-Item-Input"
+              placeholder="例）山田太郎"
+              id="name"
+              name="name"
+              required
+            />
+          </div>
+          <!-- 性別入力欄 -->
+          <div class="Form-Item">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Required">必須</span>性別
+            </p>
+            <div class="Form-Item-Radio">
+              <input
+                type="radio"
+                id="male"
+                name="gender"
+                value="male"
+                required
+              />
+              <label for="male">男性</label>
+              <input
+                type="radio"
+                id="female"
+                name="gender"
+                value="female"
+                required
+              />
+              <label for="female">女性</label>
+              <input
+                type="radio"
+                id="other"
+                name="gender"
+                value="other"
+                required
+              />
+              <label for="other">その他</label>
+            </div>
+          </div>
+          <!-- 生年月日入力欄 -->
+          <div class="Form-Item">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Required">必須</span>生年月日
+            </p>
+            <div class="Form-Item-Select">
+              <select
+                id="birthYear"
+                name="birthYear"
+                class="Form-Item-Select-Input"
+                style="width: 120px"
+                required
+              ></select>
+              <span class="mt-auto">年</span>
+              <select
+                id="birthMonth"
+                name="birthMonth"
+                class="Form-Item-Select-Input"
+                style="width: 80px"
+                required
+              ></select>
+              <span class="mt-auto">月</span>
+              <select
+                id="birthDate"
+                name="birthDate"
+                class="Form-Item-Select-Input"
+                style="width: 80px"
+                required
+              ></select>
+              <span class="mt-auto">日</span>
+            </div>
+          </div>
+          <!-- 郵便番号入力欄 -->
+          <div class="Form-Item">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Required">必須</span>郵便番号
+            </p>
+            <input
+              type="text"
+              id="postalCode"
+              name="postalCode"
+              class="Form-Item-Input"
+              placeholder="例）1234567"
+              required
+            />
+          </div>
+          <!-- 住所入力欄 -->
+          <div class="Form-Item">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Required">必須</span>住所
+            </p>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              class="Form-Item-Input"
+              placeholder="例）東京都新宿区新宿1-1-1"
+              required
+            />
+          </div>
+          <!-- APIから取得した住所カナを保持しておくための入力欄、 画面上には表示しない隠し要素 -->
+          <input id="addressKana" name="addressKana" style="display: none" />
+          <!-- 携帯番号入力欄 -->
+          <div class="Form-Item">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Required">必須</span>携帯番号
+            </p>
+            <input
+              id="phoneNumber"
+              name="phoneNumber"
+              type="text"
+              class="Form-Item-Input"
+              placeholder="例）09000000000"
+              required
+            />
+          </div>
+          <!-- メールアドレス入力欄 -->
+          <div class="Form-Item">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Required">必須</span>メールアドレス
+            </p>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              class="Form-Item-Input"
+              placeholder="例）example@gmail.com"
+              required
+            />
+          </div>
+          <!-- 高校 or 高専入力欄 -->
+          <div class="Form-Item">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Required">必須</span>高校 or 高専
+            </p>
+            <div class="Form-Item-Select">
+              <select
+                id="highSchoolYear"
+                name="highSchoolYear"
+                class="Form-Item-Select-Input"
+                style="width: 120px"
+                required
+              >
+                <option value="">年</option>
+              </select>
+              <input
+                type="text"
+                id="highSchoolName"
+                name="highSchoolName"
+                class="Form-Item-Input"
+                placeholder="例）東京高校"
+                style="flex: 1; margin-left: 10px"
+                required
+              />
+              <span class="mt-auto">入学</span>
+            </div>
+          </div>
+          <!-- 大学入力欄 -->
+          <div class="Form-Item">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Not-Required">任意</span>大学
+            </p>
+            <div class="Form-Item-Select">
+              <select
+                id="universityYear"
+                name="universityYear"
+                class="Form-Item-Select-Input"
+                style="width: 120px"
+              >
+                <option value="">年</option>
+              </select>
+              <input
+                type="text"
+                id="universityName"
+                name="universityName"
+                class="Form-Item-Input"
+                placeholder="例）東京大学"
+                style="flex: 1; margin-left: 10px"
+              />
+              <span class="mt-auto">入学</span>
+            </div>
+          </div>
+          <!-- 職歴入力欄 -->
+          <div class="Form-Item">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Not-Required">任意</span>職歴
+            </p>
+            <div id="jobHistories">
+              <div class="Form-Item-Select job-history">
+                <select
+                  name="jobYear[]"
+                  class="Form-Item-Select-Input"
+                  style="width: 120px"
+                ></select>
+                <input
+                  type="text"
+                  name="jobName[]"
+                  class="Form-Item-Input"
+                  placeholder="例）◯◯会社"
+                  style="flex: 1; margin-left: 10px"
+                />
+                <span class="mt-auto">入社</span>
+              </div>
+            </div>
+          </div>
+          <!-- 任意で職歴を追加できるボタン -->
+          <button type="button" id="addJobHistory" class="Form-Btn-Small">
+            職歴を追加
+          </button>
+          <!-- 免許資格入力欄 -->
+          <div class="Form-Item mt-3">
+            <p class="Form-Item-Label">
+              <span class="Form-Item-Label-Not-Required">任意</span>免許・資格
+            </p>
+            <div id="licenses">
+              <div class="Form-Item-Select license-entry">
+                <select
+                  name="licenseYear[]"
+                  class="Form-Item-Select-Input"
+                  style="width: 120px"
+                ></select>
+                <input
+                  type="text"
+                  name="licenseName[]"
+                  class="Form-Item-Input"
+                  placeholder="例）普通自動車免許"
+                  style="flex: 1; margin-left: 10px"
+                />
+                <span class="mt-auto">取得</span>
+              </div>
+            </div>
+          </div>
+          <!-- 任意で免許資格を追加できるボタン -->
+          <button type="button" id="addLicense" class="Form-Btn-Small">
+            免許・資格を追加
+          </button>
+
+          <!-- アピールポイント入力欄 -->
+          <div class="Form-Item mt-3 d-block">
+            <p class="Form-Item-Label" style="max-width: 720px">
+              <span class="Form-Item-Label-Required">必須</span
+              >今までで頑張ったこと、経験、アピールポイントを気軽に追加してください
+            </p>
+            <div id="pr">
+              <div
+                class="Form-Item-Select pr-entry"
+                style="max-width: 720px; margin-left: 0px"
+              >
+                <input
+                  type="text"
+                  name="prName[]"
+                  class="Form-Item-Input"
+                  placeholder="例）勉強頑張った"
+                  required
+                  style="flex: 1; margin-left: 0px; max-width: 720px"
+                />
+                <span class="mt-auto"></span>
+              </div>
+            </div>
+          </div>
+          <!-- 任意でPRを追加できるボタン -->
+          <button type="button" id="addPR" class="Form-Btn-Small">
+            PRを追加
+          </button>
+
+          <!-- 登録ボタン 押すとバックエンドに情報が渡る -->
+          <input
+            type="submit"
+            id="submitForm"
+            class="Form-Btn"
+            value="登録する"
+          />
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!-- 
+一覧画面のページです
+HTMLはウェブページの骨格となる構造を記述するためのマークアップ言語です。
+HTMLファイルはブラウザによって解釈され、視覚的に表示されます。
+-->
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- 
+    ここでは、文字コード、ビューポート設定、タブ名などの基本情報を設定します。
+    -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- タブの名前 -->
+    <title>履歴書 一覧</title>
+    <!-- 自前CSSファイルとの紐付け -->
+    <link rel="stylesheet" href="css/resume.css" />
+    <!-- bootstrap というCSSを簡単にかけるサービスを利用する -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <!-- jQuery という JavaScript で HTML 要素の編集を簡単にできるサービスを利用する -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <!-- crypto-js という JavaScript で 暗号化を簡単にできるサービスを利用する -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <!-- 自前JavaScriptファイルとの紐付け -->
+    <script src="js/list.js"></script>
+  </head>
+  <body style="background-color: rgb(175, 174, 174) !important">
+    <main>
+      <!-- ローディング -->
+      <div id="loadingSpinner" class="spinner-overlay">
+        <div class="spinner"></div>
+      </div>
+      <div class="container mt-3" id="contentContainer">
+        <!-- javascriptによって取得できた履歴書がここに追加される -->
+      </div>
+    </main>
+  </body>
+</html>
